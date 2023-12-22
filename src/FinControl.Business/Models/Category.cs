@@ -1,6 +1,6 @@
 ﻿namespace FinControl.Business.Models;
 
-public class Category
+public class Category : Entity
 {
     public string Name { get; set; }
 
