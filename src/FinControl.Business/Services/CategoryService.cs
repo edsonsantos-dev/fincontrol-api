@@ -1,12 +1,15 @@
 ﻿using System.Linq.Expressions;
+using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
 using FinControl.Business.Models.Validations;
 
 namespace FinControl.Business.Services;
 
-public class CategoryService(IRepository repository) :
-    GenericService<CategoryValidation, Category>(repository)
+public class CategoryService(
+    IRepository repository,
+    INotifier notifier) :
+    GenericService<CategoryValidation, Category>(repository, notifier)
 {
     public override async Task AddAsync(Category model)
     {

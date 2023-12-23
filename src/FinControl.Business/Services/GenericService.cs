@@ -1,12 +1,15 @@
 ﻿using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
+using FinControl.Business.Notifications;
 using FluentValidation;
+using FluentValidation.Results;
 
 namespace FinControl.Business.Services;
 
 public class GenericService<TValidation, TEntity>(
-    IRepository repository)
+    IRepository repository,
+    INotifier _notifier)
     : IGenericService<TValidation, TEntity>
     where TValidation : AbstractValidator<TEntity>
     where TEntity : Entity
@@ -27,7 +30,7 @@ public class GenericService<TValidation, TEntity>(
 
         if (validator.IsValid) return true;
 
-        //TODO: Throwing exceptions
+        await NotifyAsync(validator);
 
         return false;
     }
@@ -37,9 +40,19 @@ public class GenericService<TValidation, TEntity>(
         return await repository.RemoveAsync(id);
     }
 
-    public Task NotifyAsync(string message)
+    protected Task NotifyAsync(string message)
     {
-        throw new NotImplementedException();
+        _notifier.AddNotification(new Notification(message));
+        
+        return Task.CompletedTask;
+    }
+
+    private async Task NotifyAsync(ValidationResult validationResult)
+    {
+        foreach (var item in validationResult.Errors)
+        {
+            await NotifyAsync(item.ErrorMessage);
+        }
     }
 
     public virtual void Dispose()

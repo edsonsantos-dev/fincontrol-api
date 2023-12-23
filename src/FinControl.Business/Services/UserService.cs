@@ -1,11 +1,14 @@
-﻿using FinControl.Business.Interfaces.Repositories;
+﻿using FinControl.Business.Interfaces;
+using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
 using FinControl.Business.Models.Validations;
 
 namespace FinControl.Business.Services;
 
-public class UserService(IRepository repository)
-    : GenericService<UserValidation, User>(repository)
+public class UserService(
+    IRepository repository,
+    INotifier notifier)
+    : GenericService<UserValidation, User>(repository, notifier)
 {
     public override async Task AddAsync(User model)
     {

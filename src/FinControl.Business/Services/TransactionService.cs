@@ -1,11 +1,14 @@
-﻿using FinControl.Business.Interfaces.Repositories;
+﻿using FinControl.Business.Interfaces;
+using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
 using FinControl.Business.Models.Validations;
 
 namespace FinControl.Business.Services;
 
-public class TransactionService(IRepository repository)
-    : GenericService<TransactionValidation, Transaction>(repository)
+public class TransactionService(
+    IRepository repository,
+    INotifier notifier)
+    : GenericService<TransactionValidation, Transaction>(repository, notifier)
 {
     public override async Task AddAsync(Transaction model)
     {
