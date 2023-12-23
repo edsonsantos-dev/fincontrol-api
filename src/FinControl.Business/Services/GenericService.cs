@@ -37,6 +37,11 @@ public class GenericService<TValidation, TEntity>(
         return await repository.RemoveAsync(id);
     }
 
+    public Task NotifyAsync(string message)
+    {
+        throw new NotImplementedException();
+    }
+
     public virtual void Dispose()
     {
         repository?.Dispose();

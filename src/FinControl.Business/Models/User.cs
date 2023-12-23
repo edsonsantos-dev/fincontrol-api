@@ -10,6 +10,7 @@ public class User : AuditableEntity
     public string Email { get; set; }
     public string PasswordHash { get; set; }
     public string FullName => $"{FirstName} {LastName}";
+    public bool IsActive { get; set; }
     
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
