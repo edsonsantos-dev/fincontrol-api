@@ -2,6 +2,6 @@
 
 namespace FinControl.Business.Interfaces.Repositories;
 
-public interface IAccountRepository : IRepository<Account>
+public interface IAccountRepository : IRepository
 {
 }

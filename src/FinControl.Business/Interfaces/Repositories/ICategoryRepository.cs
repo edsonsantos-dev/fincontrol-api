@@ -2,6 +2,6 @@
 
 namespace FinControl.Business.Interfaces.Repositories;
 
-public interface IUserRepository : IRepository
+public interface ICategoryRepository : IRepository
 {
 }
