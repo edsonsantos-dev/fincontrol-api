@@ -6,6 +6,11 @@ public class UserValidation : ValidatorBase<User>
 {
     public UserValidation()
     {
+        ApplyRules();
+    }
+
+    protected sealed override void ApplyRules()
+    {
         RuleFor(x => x.FirstName)
             .NotEmpty().WithMessage(IfNullOrEmptyMessage)
             .Length(3, 20).WithMessage(LengthMessage);

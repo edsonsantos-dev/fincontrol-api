@@ -6,6 +6,11 @@ public class TransactionValidation : ValidatorBase<Transaction>
 {
     public TransactionValidation()
     {
+        ApplyRules();
+    }
+
+    protected sealed override void ApplyRules()
+    {
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage(IfNullOrEmptyMessage)
             .Length(3, 20).WithMessage(LengthMessage);

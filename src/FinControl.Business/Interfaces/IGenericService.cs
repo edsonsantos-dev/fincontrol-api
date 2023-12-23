@@ -2,9 +2,9 @@
 
 namespace FinControl.Business.Interfaces;
 
-public interface IGenericService<T> : IDisposable where T : Entity
+public interface IGenericService<TEntity> : IDisposable where TEntity : Entity
 {
-    Task<T> AddAsync(T model);
-    Task<T> UpdateAsync(T model);
+    Task AddAsync(TEntity model);
+    Task UpdateAsync(TEntity model);
     Task<bool> RemoveAsync(Guid id);
 }

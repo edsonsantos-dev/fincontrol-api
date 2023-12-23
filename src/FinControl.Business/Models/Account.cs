@@ -1,6 +1,8 @@
 ﻿namespace FinControl.Business.Models;
 
-public class Account : Entity
+public class Account : AuditableEntity
 {
-    public List<User> User { get; set; }
+    public List<User> Users { get; set; } = [];
+    public List<Category>? Categories { get; set; }
+    public List<Transaction>? Transactions { get; set; }
 }
