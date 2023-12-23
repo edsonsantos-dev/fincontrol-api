@@ -13,7 +13,7 @@ public class TransactionValidation : ValidatorBase<Transaction>
     {
         RuleFor(x => x.Description)
             .NotEmpty().WithMessage(IfNullOrEmptyMessage)
-            .Length(3, 20).WithMessage(LengthMessage);
+            .Length(3, 100).WithMessage(LengthMessage);
 
         RuleFor(x => x.Amount)
             .GreaterThan(0).WithMessage(GreaterThanMessage);
