@@ -6,7 +6,7 @@ using FinControl.Business.Models.Validations;
 namespace FinControl.Business.Services;
 
 public class TransactionService(
-    IRepository repository,
+    ITransactionRepository repository,
     INotifier notifier)
     : GenericService<TransactionValidation, Transaction>(repository, notifier)
 {

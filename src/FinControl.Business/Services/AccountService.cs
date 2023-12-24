@@ -6,7 +6,7 @@ using FinControl.Business.Models.Validations;
 namespace FinControl.Business.Services;
 
 public class AccountService(
-    IRepository repository,
+    IRepository<Account> repository,
     INotifier notifier) :
     GenericService<AccountValidation, Account>(repository, notifier)
 {

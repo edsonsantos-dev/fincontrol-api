@@ -7,8 +7,8 @@ using FluentValidation.Results;
 
 namespace FinControl.Business.Services;
 
-public class GenericService<TValidation, TEntity>(
-    IRepository repository,
+public abstract class GenericService<TValidation, TEntity>(
+    IRepository<TEntity> repository,
     INotifier _notifier)
     : IGenericService<TValidation, TEntity>
     where TValidation : AbstractValidator<TEntity>

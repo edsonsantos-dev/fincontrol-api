@@ -6,7 +6,7 @@ using FinControl.Business.Models.Validations;
 namespace FinControl.Business.Services;
 
 public class UserService(
-    IRepository repository,
+    IRepository<User> repository,
     INotifier notifier)
     : GenericService<UserValidation, User>(repository, notifier)
 {

@@ -7,7 +7,7 @@ using FinControl.Business.Models.Validations;
 namespace FinControl.Business.Services;
 
 public class CategoryService(
-    IRepository repository,
+    IRepository<Category> repository,
     INotifier notifier) :
     GenericService<CategoryValidation, Category>(repository, notifier)
 {
@@ -40,7 +40,7 @@ public class CategoryService(
 
     public override async Task<bool> RemoveAsync(Guid id)
     {
-        var category = await repository.GetByIdAsync<Category>(id);
+        var category = await repository.GetByIdAsync(id);
 
         if (category.Transactions.Count == 0) return await base.RemoveAsync(id);
 
