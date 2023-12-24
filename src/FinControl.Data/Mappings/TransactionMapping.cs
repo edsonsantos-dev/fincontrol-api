@@ -21,6 +21,8 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
             .IsRequired();
         builder.Property(x => x.Id)
             .HasColumnName("id");
+        builder.Property(x => x.UserId)
+            .HasColumnName("userid");
         builder.Property(x => x.AddedOn)
             .HasColumnName("addedon");
         builder.Property(x => x.AddedBy)
@@ -48,5 +50,8 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
         builder.HasOne(x => x.Account)
             .WithMany(x => x.Transactions)
             .HasForeignKey(x => x.AccountId);
+        builder.HasOne(x => x.User)
+            .WithMany(x => x.Transactions)
+            .HasForeignKey(x => x.UserId);
     }
 }

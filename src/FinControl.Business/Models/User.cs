@@ -13,6 +13,7 @@ public class User : AuditableEntity
 
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
+    public List<Transaction>? Transactions { get; set; }
     public UserRole Role { get; set; }
 
     public void SetIdToAccountIdIfOwner()

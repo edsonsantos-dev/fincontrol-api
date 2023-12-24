@@ -9,4 +9,6 @@ public class Transaction : AuditableEntity
     public Category Category { get; set; }
     public Guid AccountId { get; set; }
     public Account Account { get; set; }
+    public Guid UserId { get; set; }
+    public User User { get; set; }
 }
