@@ -19,6 +19,9 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
             .HasMaxLength(100)
             .HasColumnName("description")
             .IsRequired();
+        builder.Property(x => x.Installment)
+            .HasDefaultValue(1)
+            .HasColumnName("installment");
         builder.Property(x => x.Id)
             .HasColumnName("id");
         builder.Property(x => x.UserId)

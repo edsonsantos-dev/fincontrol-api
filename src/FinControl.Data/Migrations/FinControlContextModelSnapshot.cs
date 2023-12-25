@@ -131,9 +131,9 @@ namespace FinControl.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("frequency");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Installment")
                         .HasColumnType("integer")
-                        .HasColumnName("quantity");
+                        .HasColumnName("installment");
 
                     b.HasKey("Id");
 
@@ -172,6 +172,12 @@ namespace FinControl.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)")
                         .HasColumnName("description");
+
+                    b.Property<int>("Installment")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasDefaultValue(1)
+                        .HasColumnName("installment");
 
                     b.Property<Guid?>("ModifiedBy")
                         .HasColumnType("uuid")

@@ -5,7 +5,7 @@ namespace FinControl.Business.Models;
 
 public class Recurrence : AddableEntity
 {
-    public int Quantity { get; set; }
+    public int Installment { get; set; }
     public RecurringFrequency Frequency { get; set; }
 
     public List<Transaction> Transactions { get; set; }

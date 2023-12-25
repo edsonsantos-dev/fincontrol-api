@@ -31,7 +31,7 @@ namespace FinControl.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    quantity = table.Column<int>(type: "integer", nullable: false),
+                    installment = table.Column<int>(type: "integer", nullable: false),
                     frequency = table.Column<int>(type: "integer", nullable: false),
                     addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false)
@@ -102,8 +102,9 @@ namespace FinControl.Data.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     amount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    installment = table.Column<int>(type: "integer", nullable: false, defaultValue: 1),
                     categoryid = table.Column<Guid>(type: "uuid", nullable: false),
-                    RecurrenceId = table.Column<Guid>(type: "uuid", nullable: true),
+                    recurrenceid = table.Column<Guid>(type: "uuid", nullable: true),
                     accountid = table.Column<Guid>(type: "uuid", nullable: false),
                     userid = table.Column<Guid>(type: "uuid", nullable: false),
                     addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -127,8 +128,8 @@ namespace FinControl.Data.Migrations
                         principalTable: "categories",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_transactions_recurrences_RecurrenceId",
-                        column: x => x.RecurrenceId,
+                        name: "FK_transactions_recurrences_recurrenceid",
+                        column: x => x.recurrenceid,
                         principalTable: "recurrences",
                         principalColumn: "id");
                     table.ForeignKey(
@@ -164,11 +165,6 @@ namespace FinControl.Data.Migrations
                 column: "removedn");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_RecurrenceId",
-                table: "transactions",
-                column: "RecurrenceId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_transactions_accountid",
                 table: "transactions",
                 column: "accountid");
@@ -187,6 +183,11 @@ namespace FinControl.Data.Migrations
                 name: "IX_transactions_categoryid",
                 table: "transactions",
                 column: "categoryid");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_transactions_recurrenceid",
+                table: "transactions",
+                column: "recurrenceid");
 
             migrationBuilder.CreateIndex(
                 name: "IX_transactions_removedn",

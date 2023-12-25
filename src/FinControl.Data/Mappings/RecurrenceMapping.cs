@@ -12,8 +12,8 @@ public class RecurrenceMapping : IEntityTypeConfiguration<Recurrence>
         builder.HasKey(x => x.Id);
 
         
-        builder.Property(x => x.Quantity)
-            .HasColumnName("quantity");
+        builder.Property(x => x.Installment)
+            .HasColumnName("installment");
         builder.Property(x => x.Frequency)
             .HasColumnName("frequency");
         builder.Property(x => x.Id)
