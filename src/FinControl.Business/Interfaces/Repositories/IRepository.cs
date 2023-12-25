@@ -1,5 +1,5 @@
 ﻿using System.Linq.Expressions;
-using FinControl.Business.Models.AuditableEntities;
+using FinControl.Business.Models;
 
 namespace FinControl.Business.Interfaces.Repositories;
 

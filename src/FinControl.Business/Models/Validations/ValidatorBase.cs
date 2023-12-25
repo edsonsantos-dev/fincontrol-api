@@ -1,5 +1,4 @@
-﻿using FinControl.Business.Models.AuditableEntities;
-using FluentValidation;
+﻿using FluentValidation;
 
 namespace FinControl.Business.Models.Validations;
 

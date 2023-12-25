@@ -1,4 +1,4 @@
-﻿namespace FinControl.Business.Models.Enums;
+﻿namespace FinControl.Shared.Enums;
 
 public enum UserRole
 {

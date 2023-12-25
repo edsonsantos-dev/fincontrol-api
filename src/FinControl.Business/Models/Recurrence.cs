@@ -1,5 +1,4 @@
-﻿using FinControl.Business.Models.AuditableEntities;
-using FinControl.Business.Models.Enums;
+﻿using FinControl.Shared.Enums;
 
 namespace FinControl.Business.Models;
 

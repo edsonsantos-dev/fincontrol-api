@@ -1,4 +1,4 @@
-﻿namespace FinControl.Business.Models.AuditableEntities;
+﻿namespace FinControl.Business.Models;
 
 public class ModifiableEntity : AddableEntity
 {

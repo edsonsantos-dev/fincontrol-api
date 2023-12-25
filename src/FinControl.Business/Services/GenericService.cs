@@ -1,6 +1,6 @@
 ﻿using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
-using FinControl.Business.Models.AuditableEntities;
+using FinControl.Business.Models;
 using FinControl.Business.Notifications;
 using FluentValidation;
 using FluentValidation.Results;

@@ -1,6 +1,4 @@
-﻿using FinControl.Business.Models.AuditableEntities;
-
-namespace FinControl.Business.Models;
+﻿namespace FinControl.Business.Models;
 
 public class Transaction : RemovableEntity
 {

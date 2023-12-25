@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinControl.Business", "src\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinControl.Data", "src\FinControl.Data\FinControl.Data.csproj", "{C79A867A-6AC1-4A1D-A961-BF1B8BF41220}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FinControl.Shared", "src\FinControl.Shared\FinControl.Shared.csproj", "{AA8CA4E3-A588-451D-9CDF-AFBD2910CF93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{C79A867A-6AC1-4A1D-A961-BF1B8BF41220}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C79A867A-6AC1-4A1D-A961-BF1B8BF41220}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C79A867A-6AC1-4A1D-A961-BF1B8BF41220}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AA8CA4E3-A588-451D-9CDF-AFBD2910CF93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AA8CA4E3-A588-451D-9CDF-AFBD2910CF93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AA8CA4E3-A588-451D-9CDF-AFBD2910CF93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AA8CA4E3-A588-451D-9CDF-AFBD2910CF93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
