@@ -1,6 +1,8 @@
-﻿namespace FinControl.Business.Models;
+﻿using FinControl.Business.Models.AuditableEntities;
 
-public class Account : AuditableEntity
+namespace FinControl.Business.Models;
+
+public class Account : ModifiableEntity
 {
     public List<User> Users { get; set; } = [];
     public List<Category>? Categories { get; set; }

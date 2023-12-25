@@ -1,6 +1,8 @@
-﻿namespace FinControl.Business.Models;
+﻿using FinControl.Business.Models.AuditableEntities;
 
-public class Category : AuditableEntity
+namespace FinControl.Business.Models;
+
+public class Category : RemovableEntity
 {
     public string Name { get; set; }
     public bool IsActive { get; set; }

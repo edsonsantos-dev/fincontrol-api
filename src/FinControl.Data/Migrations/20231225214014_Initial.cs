@@ -19,13 +19,26 @@ namespace FinControl.Data.Migrations
                     addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false),
                     modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    modifiedby = table.Column<Guid>(type: "uuid", nullable: true),
-                    removedn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    removedby = table.Column<Guid>(type: "uuid", nullable: true)
+                    modifiedby = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_accounts", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "recurrences",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    quantity = table.Column<int>(type: "integer", nullable: false),
+                    frequency = table.Column<int>(type: "integer", nullable: false),
+                    addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    addedby = table.Column<Guid>(type: "uuid", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_recurrences", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -61,6 +74,8 @@ namespace FinControl.Data.Migrations
                     firstname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     lastname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    WhatsAppNumber = table.Column<string>(type: "text", nullable: true),
+                    ConfirmedWhatsAppNumber = table.Column<bool>(type: "boolean", nullable: true),
                     passwordhash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     isactive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     accountid = table.Column<Guid>(type: "uuid", nullable: false),
@@ -68,9 +83,7 @@ namespace FinControl.Data.Migrations
                     addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false),
                     modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    modifiedby = table.Column<Guid>(type: "uuid", nullable: true),
-                    removedn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    removedby = table.Column<Guid>(type: "uuid", nullable: true)
+                    modifiedby = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -90,7 +103,9 @@ namespace FinControl.Data.Migrations
                     amount = table.Column<decimal>(type: "numeric(18,2)", nullable: false),
                     description = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     categoryid = table.Column<Guid>(type: "uuid", nullable: false),
+                    RecurrenceId = table.Column<Guid>(type: "uuid", nullable: true),
                     accountid = table.Column<Guid>(type: "uuid", nullable: false),
+                    userid = table.Column<Guid>(type: "uuid", nullable: false),
                     addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false),
                     modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
@@ -110,6 +125,16 @@ namespace FinControl.Data.Migrations
                         name: "FK_transactions_categories_categoryid",
                         column: x => x.categoryid,
                         principalTable: "categories",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_transactions_recurrences_RecurrenceId",
+                        column: x => x.RecurrenceId,
+                        principalTable: "recurrences",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "FK_transactions_users_userid",
+                        column: x => x.userid,
+                        principalTable: "users",
                         principalColumn: "id");
                 });
 
@@ -139,6 +164,11 @@ namespace FinControl.Data.Migrations
                 column: "removedn");
 
             migrationBuilder.CreateIndex(
+                name: "IX_transactions_RecurrenceId",
+                table: "transactions",
+                column: "RecurrenceId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_transactions_accountid",
                 table: "transactions",
                 column: "accountid");
@@ -164,6 +194,11 @@ namespace FinControl.Data.Migrations
                 column: "removedn");
 
             migrationBuilder.CreateIndex(
+                name: "IX_transactions_userid",
+                table: "transactions",
+                column: "userid");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_users_accountid",
                 table: "users",
                 column: "accountid");
@@ -176,10 +211,13 @@ namespace FinControl.Data.Migrations
                 name: "transactions");
 
             migrationBuilder.DropTable(
-                name: "users");
+                name: "categories");
 
             migrationBuilder.DropTable(
-                name: "categories");
+                name: "recurrences");
+
+            migrationBuilder.DropTable(
+                name: "users");
 
             migrationBuilder.DropTable(
                 name: "accounts");

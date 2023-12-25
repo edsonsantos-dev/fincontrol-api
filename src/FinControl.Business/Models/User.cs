@@ -1,12 +1,15 @@
-﻿using FinControl.Business.Models.Enums;
+﻿using FinControl.Business.Models.AuditableEntities;
+using FinControl.Business.Models.Enums;
 
 namespace FinControl.Business.Models;
 
-public class User : AuditableEntity
+public class User : ModifiableEntity
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
+    public string? WhatsAppNumber { get; set; }
+    public bool? ConfirmedWhatsAppNumber { get; set; }
     public string PasswordHash { get; set; }
     public string FullName => $"{FirstName} {LastName}";
     public bool IsActive { get; set; }

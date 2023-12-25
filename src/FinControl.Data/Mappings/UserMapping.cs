@@ -46,10 +46,6 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .HasColumnName("modifiedon");
         builder.Property(x => x.ModifiedBy)
             .HasColumnName("modifiedby");
-        builder.Property(x => x.RemovedOn)
-            .HasColumnName("removedn");
-        builder.Property(x => x.RemovedBy)
-            .HasColumnName("removedby");
 
         builder.HasOne(x => x.Account)
             .WithMany(x => x.Users)

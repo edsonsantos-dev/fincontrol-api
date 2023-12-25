@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 using FinControl.Business.Interfaces.Repositories;
-using FinControl.Business.Models;
+using FinControl.Business.Models.AuditableEntities;
 using FinControl.Data.Context;
 using Microsoft.EntityFrameworkCore;
 

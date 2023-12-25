@@ -39,6 +39,8 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
             .HasColumnName("categoryid");
         builder.Property(x => x.AccountId)
             .HasColumnName("accountid");
+        builder.Property(x => x.RecurrenceId)
+            .HasColumnName("recurrenceid");
         
         builder.HasIndex(x => x.AddedBy);
         builder.HasIndex(x => x.AddedOn);

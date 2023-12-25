@@ -1,5 +1,4 @@
-﻿using System.Xml.Linq;
-using FinControl.Business.Models;
+﻿using FinControl.Business.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,9 +21,5 @@ public class AccountMapping : IEntityTypeConfiguration<Account>
             .HasColumnName("modifiedon");
         builder.Property(x => x.ModifiedBy)
             .HasColumnName("modifiedby");
-        builder.Property(x => x.RemovedOn)
-            .HasColumnName("removedn");
-        builder.Property(x => x.RemovedBy)
-            .HasColumnName("removedby");
     }
 }

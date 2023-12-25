@@ -1,4 +1,4 @@
-﻿namespace FinControl.Business.Models;
+﻿namespace FinControl.Business.Models.AuditableEntities;
 
 public abstract class Entity
 {

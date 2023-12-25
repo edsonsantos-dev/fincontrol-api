@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace FinControl.Data.Migrations
 {
     [DbContext(typeof(FinControlContext))]
-    [Migration("20231223191656_Initial")]
-    partial class Initial
+    [Migration("20231225214224_rename column")]
+    partial class renamecolumn
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -47,14 +47,6 @@ namespace FinControl.Data.Migrations
                     b.Property<DateTime?>("ModifiedOn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modifiedon");
-
-                    b.Property<Guid?>("RemovedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("removedby");
-
-                    b.Property<DateTime?>("RemovedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removedn");
 
                     b.HasKey("Id");
 
@@ -123,6 +115,34 @@ namespace FinControl.Data.Migrations
                     b.ToTable("categories", (string)null);
                 });
 
+            modelBuilder.Entity("FinControl.Business.Models.Recurrence", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid")
+                        .HasColumnName("id");
+
+                    b.Property<Guid>("AddedBy")
+                        .HasColumnType("uuid")
+                        .HasColumnName("addedby");
+
+                    b.Property<DateTime>("AddedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("addedon");
+
+                    b.Property<int>("Frequency")
+                        .HasColumnType("integer")
+                        .HasColumnName("frequency");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("integer")
+                        .HasColumnName("quantity");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("recurrences", (string)null);
+                });
+
             modelBuilder.Entity("FinControl.Business.Models.Transaction", b =>
                 {
                     b.Property<Guid>("Id")
@@ -164,6 +184,10 @@ namespace FinControl.Data.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("modifiedon");
 
+                    b.Property<Guid?>("RecurrenceId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("recurrenceid");
+
                     b.Property<Guid?>("RemovedBy")
                         .HasColumnType("uuid")
                         .HasColumnName("removedby");
@@ -171,6 +195,10 @@ namespace FinControl.Data.Migrations
                     b.Property<DateTime?>("RemovedOn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("removedn");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("userid");
 
                     b.HasKey("Id");
 
@@ -182,7 +210,11 @@ namespace FinControl.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
+                    b.HasIndex("RecurrenceId");
+
                     b.HasIndex("RemovedOn");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("transactions", (string)null);
                 });
@@ -205,6 +237,9 @@ namespace FinControl.Data.Migrations
                     b.Property<DateTime>("AddedOn")
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("addedon");
+
+                    b.Property<bool?>("ConfirmedWhatsAppNumber")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -244,17 +279,12 @@ namespace FinControl.Data.Migrations
                         .HasColumnType("character varying(100)")
                         .HasColumnName("passwordhash");
 
-                    b.Property<Guid?>("RemovedBy")
-                        .HasColumnType("uuid")
-                        .HasColumnName("removedby");
-
-                    b.Property<DateTime?>("RemovedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removedn");
-
                     b.Property<int>("Role")
                         .HasColumnType("integer")
                         .HasColumnName("role");
+
+                    b.Property<string>("WhatsAppNumber")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -285,9 +315,22 @@ namespace FinControl.Data.Migrations
                         .HasForeignKey("CategoryId")
                         .IsRequired();
 
+                    b.HasOne("FinControl.Business.Models.Recurrence", "Recurrence")
+                        .WithMany("Transactions")
+                        .HasForeignKey("RecurrenceId");
+
+                    b.HasOne("FinControl.Business.Models.User", "User")
+                        .WithMany("Transactions")
+                        .HasForeignKey("UserId")
+                        .IsRequired();
+
                     b.Navigation("Account");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Recurrence");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FinControl.Business.Models.User", b =>
@@ -310,6 +353,16 @@ namespace FinControl.Data.Migrations
                 });
 
             modelBuilder.Entity("FinControl.Business.Models.Category", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("FinControl.Business.Models.Recurrence", b =>
+                {
+                    b.Navigation("Transactions");
+                });
+
+            modelBuilder.Entity("FinControl.Business.Models.User", b =>
                 {
                     b.Navigation("Transactions");
                 });
