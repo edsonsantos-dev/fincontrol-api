@@ -2,7 +2,7 @@
 
 namespace FinControl.API.ViewModels;
 
-public class TransactionViewModel : ViewModelBase
+public class TransactionViewModel : ViewModelBase<Transaction>
 {
     public decimal Amount { get; set; }
     public string Description { get; set; }
@@ -12,11 +12,11 @@ public class TransactionViewModel : ViewModelBase
     public CategoryViewModel? Category { get; set; }
     public Guid? RecurrenceId { get; set; }
     public RecurrenceViewModel? Recurrence { get; set; }
-    public Guid AccountId { get; set; }
-    public Guid UserId { get; set; }
-    public UserViewModel User { get; set; }
+    public Guid? AccountId { get; set; }
+    public Guid? UserId { get; set; }
+    public UserViewModel? User { get; set; }
     
-    public Transaction ToModel()
+    public override Transaction ToModel()
     {
         return new Transaction
         {

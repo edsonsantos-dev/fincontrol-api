@@ -3,12 +3,12 @@ using FinControl.Shared.Enums;
 
 namespace FinControl.API.ViewModels;
 
-public class RecurrenceViewModel : ViewModelBase
+public class RecurrenceViewModel : ViewModelBase<Recurrence>
 {
     public int Installment { get; set; }
     public RecurringFrequency Frequency { get; set; }
 
-    public Recurrence ToModel()
+    public override Recurrence ToModel()
     {
         return new Recurrence
         {

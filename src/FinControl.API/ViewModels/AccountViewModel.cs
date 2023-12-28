@@ -12,7 +12,7 @@ public class AccountViewModel
     {
         return new Account
         {
-            Users = Users.Select(x => x.ToModel()).ToList()
+            Users = Users!.Select(x => x.ToModel()).ToList()
         };
     }
 

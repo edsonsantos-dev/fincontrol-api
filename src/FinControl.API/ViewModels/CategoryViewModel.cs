@@ -2,16 +2,16 @@
 
 namespace FinControl.API.ViewModels;
 
-public class CategoryViewModel : ViewModelBase
+public class CategoryViewModel : ViewModelBase<Category>
 {
     public string Name { get; set; }
     public bool IsActive { get; set; }
     public Guid AccountId { get; set; }
-    public UserViewModel User { get; set; }
+    public UserViewModel? User { get; set; }
     public Guid UserId { get; set; }
     public List<TransactionViewModel>? Transactions { get; set; }
 
-    public Category ToModel()
+    public override Category ToModel()
     {
         return new Category
         {
