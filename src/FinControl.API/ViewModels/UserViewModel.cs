@@ -8,7 +8,7 @@ public class UserViewModel : ViewModelBase<User>
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
-    public string PasswordHash { get; set; }
+    public string Password { get; set; }
     public string? WhatsAppNumber { get; set; }
     public string? FullName { get; set; }
     public bool IsActive { get; set; }
@@ -24,7 +24,7 @@ public class UserViewModel : ViewModelBase<User>
             FirstName = FirstName,
             LastName = LastName,
             Email = Email,
-            PasswordHash = PasswordHash,
+            PasswordHash = Password,
             WhatsAppNumber = WhatsAppNumber,
             IsActive = IsActive,
             AccountId = AccountId,

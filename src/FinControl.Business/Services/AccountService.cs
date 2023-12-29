@@ -7,20 +7,16 @@ namespace FinControl.Business.Services;
 
 public class AccountService(
     IRepository<Account> repository,
-    INotifier notifier) :
+    INotifier notifier,
+    IUserService userService) :
     GenericService<AccountValidation, Account>(repository, notifier)
 {
-    // public override async Task AddAsync(Account model)
-    // {
-    //     if (!await RunValidationAsync(new AccountValidation(), model)) return;
-    //
-    //     await base.AddAsync(model);
-    // }
-    //
-    // public override async Task UpdateAsync(Account model)
-    // {
-    //     if (!await RunValidationAsync(new AccountValidation(), model)) return;
-    //
-    //     await base.UpdateAsync(model);
-    // }
+    public override async Task AddAsync(Account model)
+    {
+        if (!await RunValidationAsync(new AccountValidation(), model)) return;
+
+        userService.GeneretePasswordHash(model.Users.FirstOrDefault()!);
+
+        await base.AddAsync(model);
+    }
 }
