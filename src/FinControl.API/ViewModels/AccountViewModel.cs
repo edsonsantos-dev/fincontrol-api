@@ -2,13 +2,13 @@
 
 namespace FinControl.API.ViewModels;
 
-public class AccountViewModel
+public class AccountViewModel : ViewModelBase<Account>
 {
     public List<UserViewModel>? Users { get; set; } = [];
     public List<CategoryViewModel>? Categories { get; set; }
     public List<TransactionViewModel>? Transactions { get; set; }
 
-    public Account ToModel()
+    public override Account ToModel()
     {
         return new Account
         {

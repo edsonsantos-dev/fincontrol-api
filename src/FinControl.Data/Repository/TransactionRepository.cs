@@ -11,7 +11,7 @@ public class TransactionRepository(
 {
     public async Task<Transaction?> GetTransactionByIdAsync(Guid id)
     {
-        return await context.Transactions
+        return await Context.Transactions
             .AsNoTracking()
             .Include(x => x.Category)
             .Include(x => x.User)
@@ -20,7 +20,7 @@ public class TransactionRepository(
 
     public async Task<IEnumerable<Transaction>> GetTransactionsAsync(Guid accountId)
     {
-        return await context.Transactions
+        return await Context.Transactions
             .AsNoTracking()
             .Include(x => x.Category)
             .Include(x => x.User)

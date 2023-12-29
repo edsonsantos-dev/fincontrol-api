@@ -3,26 +3,28 @@ using FinControl.Shared.Enums;
 
 namespace FinControl.API.ViewModels;
 
-public class UserViewModel
+public class UserViewModel : ViewModelBase<User>
 {
     public string FirstName { get; set; }
     public string LastName { get; set; }
     public string Email { get; set; }
+    public string PasswordHash { get; set; }
     public string? WhatsAppNumber { get; set; }
-    public string FullName { get; set; }
+    public string? FullName { get; set; }
     public bool IsActive { get; set; }
 
     public Guid AccountId { get; set; }
     public List<TransactionViewModel>? Transactions { get; set; }
     public UserRole Role { get; set; }
 
-    public User ToModel()
+    public override User ToModel()
     {
         return new User
         {
             FirstName = FirstName,
             LastName = LastName,
             Email = Email,
+            PasswordHash = PasswordHash,
             WhatsAppNumber = WhatsAppNumber,
             IsActive = IsActive,
             AccountId = AccountId,

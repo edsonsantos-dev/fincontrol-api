@@ -17,6 +17,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<INotifier, Notifier>();
 builder.Services.AddScoped<IGenericService<TransactionValidation, Transaction>, TransactionService>();
 builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IGenericService<AccountValidation, Account>, AccountService>();
+builder.Services.AddScoped<IRepository<Account>, AccountRepository>();
 
 builder.Services.AddDbContext<FinControlContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString(nameof(FinControlContext))));

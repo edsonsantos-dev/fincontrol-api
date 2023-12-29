@@ -21,7 +21,7 @@ public abstract class BaseController<TViewModel, TEntity, TValidation>(
     where TValidation : AbstractValidator<TEntity>
 {
     [HttpPost]
-    protected virtual async Task<IActionResult> Add(TViewModel viewModel)
+    public virtual async Task<IActionResult> Add(TViewModel viewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -31,7 +31,7 @@ public abstract class BaseController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpPut]
-    protected virtual async Task<IActionResult> Update(TViewModel viewModel)
+    public virtual async Task<IActionResult> Update(TViewModel viewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -41,7 +41,7 @@ public abstract class BaseController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpGet]
-    protected virtual async Task<IActionResult> Get(Guid id)
+    public virtual async Task<IActionResult> Get(Guid id)
     {
         var model = await repository.GetByIdAsync(id);
 
@@ -49,7 +49,7 @@ public abstract class BaseController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpDelete]
-    protected virtual async Task<IActionResult> Remove(Guid id)
+    public virtual async Task<IActionResult> Remove(Guid id)
     {
         await service.RemoveAsync(id);
         return CustomResponse(HttpStatusCode.NoContent);

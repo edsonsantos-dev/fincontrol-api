@@ -30,7 +30,7 @@ public class TransactionViewModel : ViewModelBase<Transaction>
         };
     }
 
-    public static TransactionViewModel FromModel(Transaction? model)
+    public static TransactionViewModel? FromModel(Transaction? model)
     {
         if (model == null) return null;
         

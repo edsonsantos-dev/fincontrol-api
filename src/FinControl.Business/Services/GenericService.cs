@@ -11,16 +11,20 @@ public abstract class GenericService<TValidation, TEntity>(
     IRepository<TEntity> repository,
     INotifier _notifier)
     : IGenericService<TValidation, TEntity>
-    where TValidation : AbstractValidator<TEntity>
+    where TValidation : AbstractValidator<TEntity>, new()
     where TEntity : Entity
 {
     public virtual async Task AddAsync(TEntity model)
     {
+        if (!await RunValidationAsync(new TValidation(), model)) return;
+        
         await repository.AddAsync(model);
     }
 
     public virtual async Task UpdateAsync(TEntity model)
     {
+        if (!await RunValidationAsync(new TValidation(), model)) return;
+        
         await repository.UpdateAsync(model);
     }
 
