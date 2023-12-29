@@ -16,14 +16,14 @@ namespace FinControl.Data.Migrations
                 columns: table => new
                 {
                     id = table.Column<Guid>(type: "uuid", nullable: false),
-                    addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    addedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false),
-                    modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    modifiedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     modifiedby = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_accounts", x => x.id);
+                    table.PrimaryKey("pk_accounts", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -33,37 +33,12 @@ namespace FinControl.Data.Migrations
                     id = table.Column<Guid>(type: "uuid", nullable: false),
                     installment = table.Column<int>(type: "integer", nullable: false),
                     frequency = table.Column<int>(type: "integer", nullable: false),
-                    addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    addedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_recurrences", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "categories",
-                columns: table => new
-                {
-                    id = table.Column<Guid>(type: "uuid", nullable: false),
-                    name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
-                    isactive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
-                    accountid = table.Column<Guid>(type: "uuid", nullable: false),
-                    addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    addedby = table.Column<Guid>(type: "uuid", nullable: false),
-                    modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    modifiedby = table.Column<Guid>(type: "uuid", nullable: true),
-                    removedn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    removedby = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_categories", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_categories_accounts_accountid",
-                        column: x => x.accountid,
-                        principalTable: "accounts",
-                        principalColumn: "id");
+                    table.PrimaryKey("pk_recurrences", x => x.id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,24 +49,55 @@ namespace FinControl.Data.Migrations
                     firstname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     lastname = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
                     email = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    WhatsAppNumber = table.Column<string>(type: "text", nullable: true),
-                    ConfirmedWhatsAppNumber = table.Column<bool>(type: "boolean", nullable: true),
                     passwordhash = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    whatsappnumber = table.Column<string>(type: "text", nullable: true),
+                    confirmedwhatsappnumber = table.Column<bool>(type: "boolean", nullable: true),
                     isactive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
                     accountid = table.Column<Guid>(type: "uuid", nullable: false),
                     role = table.Column<int>(type: "integer", nullable: false),
-                    addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    addedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false),
-                    modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    modifiedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     modifiedby = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_users", x => x.id);
+                    table.PrimaryKey("pk_users", x => x.id);
                     table.ForeignKey(
-                        name: "FK_users_accounts_accountid",
+                        name: "fk_users_accounts_accountid",
                         column: x => x.accountid,
                         principalTable: "accounts",
+                        principalColumn: "id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "categories",
+                columns: table => new
+                {
+                    id = table.Column<Guid>(type: "uuid", nullable: false),
+                    name = table.Column<string>(type: "character varying(20)", maxLength: 20, nullable: false),
+                    isactive = table.Column<bool>(type: "boolean", nullable: false, defaultValue: true),
+                    userid = table.Column<Guid>(type: "uuid", nullable: false),
+                    accountid = table.Column<Guid>(type: "uuid", nullable: false),
+                    addedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
+                    addedby = table.Column<Guid>(type: "uuid", nullable: false),
+                    modifiedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    modifiedby = table.Column<Guid>(type: "uuid", nullable: true),
+                    removedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    removedby = table.Column<Guid>(type: "uuid", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_categories", x => x.id);
+                    table.ForeignKey(
+                        name: "fk_categories_accounts_accountid",
+                        column: x => x.accountid,
+                        principalTable: "accounts",
+                        principalColumn: "id");
+                    table.ForeignKey(
+                        name: "fk_categories_users_userid",
+                        column: x => x.userid,
+                        principalTable: "users",
                         principalColumn: "id");
                 });
 
@@ -107,100 +113,105 @@ namespace FinControl.Data.Migrations
                     recurrenceid = table.Column<Guid>(type: "uuid", nullable: true),
                     accountid = table.Column<Guid>(type: "uuid", nullable: false),
                     userid = table.Column<Guid>(type: "uuid", nullable: false),
-                    addedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    addedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     addedby = table.Column<Guid>(type: "uuid", nullable: false),
-                    modifiedon = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    modifiedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     modifiedby = table.Column<Guid>(type: "uuid", nullable: true),
-                    removedn = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    removedon = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
                     removedby = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_transactions", x => x.id);
+                    table.PrimaryKey("pk_transactions", x => x.id);
                     table.ForeignKey(
-                        name: "FK_transactions_accounts_accountid",
+                        name: "fk_transactions_accounts_accountid",
                         column: x => x.accountid,
                         principalTable: "accounts",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_transactions_categories_categoryid",
+                        name: "fk_transactions_categories_categoryid",
                         column: x => x.categoryid,
                         principalTable: "categories",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_transactions_recurrences_recurrenceid",
+                        name: "fk_transactions_recurrence_recurrenceid",
                         column: x => x.recurrenceid,
                         principalTable: "recurrences",
                         principalColumn: "id");
                     table.ForeignKey(
-                        name: "FK_transactions_users_userid",
+                        name: "fk_transactions_users_userid",
                         column: x => x.userid,
                         principalTable: "users",
                         principalColumn: "id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_categories_accountid",
+                name: "ix_categories_accountid",
                 table: "categories",
                 column: "accountid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_categories_addedby",
+                name: "ix_categories_addedby",
                 table: "categories",
                 column: "addedby");
 
             migrationBuilder.CreateIndex(
-                name: "IX_categories_addedon",
+                name: "ix_categories_addedon",
                 table: "categories",
                 column: "addedon");
 
             migrationBuilder.CreateIndex(
-                name: "IX_categories_isactive",
+                name: "ix_categories_isactive",
                 table: "categories",
                 column: "isactive");
 
             migrationBuilder.CreateIndex(
-                name: "IX_categories_removedn",
+                name: "ix_categories_removedon",
                 table: "categories",
-                column: "removedn");
+                column: "removedon");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_accountid",
+                name: "ix_categories_userid",
+                table: "categories",
+                column: "userid");
+
+            migrationBuilder.CreateIndex(
+                name: "ix_transactions_accountid",
                 table: "transactions",
                 column: "accountid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_addedby",
+                name: "ix_transactions_addedby",
                 table: "transactions",
                 column: "addedby");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_addedon",
+                name: "ix_transactions_addedon",
                 table: "transactions",
                 column: "addedon");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_categoryid",
+                name: "ix_transactions_categoryid",
                 table: "transactions",
                 column: "categoryid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_recurrenceid",
+                name: "ix_transactions_recurrenceid",
                 table: "transactions",
                 column: "recurrenceid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_removedn",
+                name: "ix_transactions_removedon",
                 table: "transactions",
-                column: "removedn");
+                column: "removedon");
 
             migrationBuilder.CreateIndex(
-                name: "IX_transactions_userid",
+                name: "ix_transactions_userid",
                 table: "transactions",
                 column: "userid");
 
             migrationBuilder.CreateIndex(
-                name: "IX_users_accountid",
+                name: "ix_users_accountid",
                 table: "users",
                 column: "accountid");
         }

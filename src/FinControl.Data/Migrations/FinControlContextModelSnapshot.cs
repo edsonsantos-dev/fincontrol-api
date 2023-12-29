@@ -34,7 +34,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("addedby");
 
                     b.Property<DateTime>("AddedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("addedon");
 
                     b.Property<Guid?>("ModifiedBy")
@@ -42,10 +42,11 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("modifiedby");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modifiedon");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_accounts");
 
                     b.ToTable("accounts", (string)null);
                 });
@@ -66,7 +67,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("addedby");
 
                     b.Property<DateTime>("AddedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("addedon");
 
                     b.Property<bool>("IsActive")
@@ -80,7 +81,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("modifiedby");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modifiedon");
 
                     b.Property<string>("Name")
@@ -94,20 +95,33 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("removedby");
 
                     b.Property<DateTime?>("RemovedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removedn");
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("removedon");
 
-                    b.HasKey("Id");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid")
+                        .HasColumnName("userid");
 
-                    b.HasIndex("AccountId");
+                    b.HasKey("Id")
+                        .HasName("pk_categories");
 
-                    b.HasIndex("AddedBy");
+                    b.HasIndex("AccountId")
+                        .HasDatabaseName("ix_categories_accountid");
 
-                    b.HasIndex("AddedOn");
+                    b.HasIndex("AddedBy")
+                        .HasDatabaseName("ix_categories_addedby");
 
-                    b.HasIndex("IsActive");
+                    b.HasIndex("AddedOn")
+                        .HasDatabaseName("ix_categories_addedon");
 
-                    b.HasIndex("RemovedOn");
+                    b.HasIndex("IsActive")
+                        .HasDatabaseName("ix_categories_isactive");
+
+                    b.HasIndex("RemovedOn")
+                        .HasDatabaseName("ix_categories_removedon");
+
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_categories_userid");
 
                     b.ToTable("categories", (string)null);
                 });
@@ -124,7 +138,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("addedby");
 
                     b.Property<DateTime>("AddedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("addedon");
 
                     b.Property<int>("Frequency")
@@ -135,7 +149,8 @@ namespace FinControl.Data.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("installment");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_recurrences");
 
                     b.ToTable("recurrences", (string)null);
                 });
@@ -156,7 +171,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("addedby");
 
                     b.Property<DateTime>("AddedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("addedon");
 
                     b.Property<decimal>("Amount")
@@ -184,7 +199,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("modifiedby");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modifiedon");
 
                     b.Property<Guid?>("RecurrenceId")
@@ -196,28 +211,36 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("removedby");
 
                     b.Property<DateTime?>("RemovedOn")
-                        .HasColumnType("timestamp with time zone")
-                        .HasColumnName("removedn");
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("removedon");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uuid")
                         .HasColumnName("userid");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_transactions");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .HasDatabaseName("ix_transactions_accountid");
 
-                    b.HasIndex("AddedBy");
+                    b.HasIndex("AddedBy")
+                        .HasDatabaseName("ix_transactions_addedby");
 
-                    b.HasIndex("AddedOn");
+                    b.HasIndex("AddedOn")
+                        .HasDatabaseName("ix_transactions_addedon");
 
-                    b.HasIndex("CategoryId");
+                    b.HasIndex("CategoryId")
+                        .HasDatabaseName("ix_transactions_categoryid");
 
-                    b.HasIndex("RecurrenceId");
+                    b.HasIndex("RecurrenceId")
+                        .HasDatabaseName("ix_transactions_recurrenceid");
 
-                    b.HasIndex("RemovedOn");
+                    b.HasIndex("RemovedOn")
+                        .HasDatabaseName("ix_transactions_removedon");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("ix_transactions_userid");
 
                     b.ToTable("transactions", (string)null);
                 });
@@ -238,11 +261,12 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("addedby");
 
                     b.Property<DateTime>("AddedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("addedon");
 
                     b.Property<bool?>("ConfirmedWhatsAppNumber")
-                        .HasColumnType("boolean");
+                        .HasColumnType("boolean")
+                        .HasColumnName("confirmedwhatsappnumber");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -273,7 +297,7 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("modifiedby");
 
                     b.Property<DateTime?>("ModifiedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("modifiedon");
 
                     b.Property<string>("PasswordHash")
@@ -287,11 +311,14 @@ namespace FinControl.Data.Migrations
                         .HasColumnName("role");
 
                     b.Property<string>("WhatsAppNumber")
-                        .HasColumnType("text");
+                        .HasColumnType("text")
+                        .HasColumnName("whatsappnumber");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("pk_users");
 
-                    b.HasIndex("AccountId");
+                    b.HasIndex("AccountId")
+                        .HasDatabaseName("ix_users_accountid");
 
                     b.ToTable("users", (string)null);
                 });
@@ -301,9 +328,18 @@ namespace FinControl.Data.Migrations
                     b.HasOne("FinControl.Business.Models.Account", "Account")
                         .WithMany("Categories")
                         .HasForeignKey("AccountId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_categories_accounts_accountid");
+
+                    b.HasOne("FinControl.Business.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .IsRequired()
+                        .HasConstraintName("fk_categories_users_userid");
 
                     b.Navigation("Account");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("FinControl.Business.Models.Transaction", b =>
@@ -311,21 +347,25 @@ namespace FinControl.Data.Migrations
                     b.HasOne("FinControl.Business.Models.Account", "Account")
                         .WithMany("Transactions")
                         .HasForeignKey("AccountId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_transactions_accounts_accountid");
 
                     b.HasOne("FinControl.Business.Models.Category", "Category")
                         .WithMany("Transactions")
                         .HasForeignKey("CategoryId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_transactions_categories_categoryid");
 
                     b.HasOne("FinControl.Business.Models.Recurrence", "Recurrence")
                         .WithMany("Transactions")
-                        .HasForeignKey("RecurrenceId");
+                        .HasForeignKey("RecurrenceId")
+                        .HasConstraintName("fk_transactions_recurrence_recurrenceid");
 
                     b.HasOne("FinControl.Business.Models.User", "User")
                         .WithMany("Transactions")
                         .HasForeignKey("UserId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_transactions_users_userid");
 
                     b.Navigation("Account");
 
@@ -341,7 +381,8 @@ namespace FinControl.Data.Migrations
                     b.HasOne("FinControl.Business.Models.Account", "Account")
                         .WithMany("Users")
                         .HasForeignKey("AccountId")
-                        .IsRequired();
+                        .IsRequired()
+                        .HasConstraintName("fk_users_accounts_accountid");
 
                     b.Navigation("Account");
                 });
