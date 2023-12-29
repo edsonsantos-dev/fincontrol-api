@@ -13,37 +13,12 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
         
         builder.Property(x => x.Amount)
             .HasColumnType("decimal(18,2)")
-            .HasColumnName("amount")
             .IsRequired();
         builder.Property(x => x.Description)
             .HasMaxLength(100)
-            .HasColumnName("description")
             .IsRequired();
         builder.Property(x => x.Installment)
-            .HasDefaultValue(1)
-            .HasColumnName("installment");
-        builder.Property(x => x.Id)
-            .HasColumnName("id");
-        builder.Property(x => x.UserId)
-            .HasColumnName("userid");
-        builder.Property(x => x.AddedOn)
-            .HasColumnName("addedon");
-        builder.Property(x => x.AddedBy)
-            .HasColumnName("addedby");
-        builder.Property(x => x.ModifiedOn)
-            .HasColumnName("modifiedon");
-        builder.Property(x => x.ModifiedBy)
-            .HasColumnName("modifiedby");
-        builder.Property(x => x.RemovedOn)
-            .HasColumnName("removedn");
-        builder.Property(x => x.RemovedBy)
-            .HasColumnName("removedby");
-        builder.Property(x => x.CategoryId)
-            .HasColumnName("categoryid");
-        builder.Property(x => x.AccountId)
-            .HasColumnName("accountid");
-        builder.Property(x => x.RecurrenceId)
-            .HasColumnName("recurrenceid");
+            .HasDefaultValue(1);
         
         builder.HasIndex(x => x.AddedBy);
         builder.HasIndex(x => x.AddedOn);

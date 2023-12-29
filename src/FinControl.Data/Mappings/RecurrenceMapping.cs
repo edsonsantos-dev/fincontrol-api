@@ -10,18 +10,6 @@ public class RecurrenceMapping : IEntityTypeConfiguration<Recurrence>
     {
         builder.ToTable("recurrences");
         builder.HasKey(x => x.Id);
-
-        
-        builder.Property(x => x.Installment)
-            .HasColumnName("installment");
-        builder.Property(x => x.Frequency)
-            .HasColumnName("frequency");
-        builder.Property(x => x.Id)
-            .HasColumnName("id");
-        builder.Property(x => x.AddedOn)
-            .HasColumnName("addedon");
-        builder.Property(x => x.AddedBy)
-            .HasColumnName("addedby");
         
         builder.HasMany(x => x.Transactions)
             .WithOne(x => x.Recurrence)

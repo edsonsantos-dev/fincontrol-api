@@ -10,16 +10,5 @@ public class AccountMapping : IEntityTypeConfiguration<Account>
     {
         builder.ToTable("accounts");
         builder.HasKey(x => x.Id);
-
-        builder.Property(x => x.Id)
-            .HasColumnName("id");
-        builder.Property(x => x.AddedOn)
-            .HasColumnName("addedon");
-        builder.Property(x => x.AddedBy)
-            .HasColumnName("addedby");
-        builder.Property(x => x.ModifiedOn)
-            .HasColumnName("modifiedon");
-        builder.Property(x => x.ModifiedBy)
-            .HasColumnName("modifiedby");
     }
 }
