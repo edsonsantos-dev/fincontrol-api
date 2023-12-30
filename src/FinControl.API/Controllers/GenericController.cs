@@ -4,6 +4,7 @@ using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinControl.API.Controllers;
@@ -17,6 +18,7 @@ public abstract class GenericController<TViewModel, TEntity, TValidation>(
     where TValidation : AbstractValidator<TEntity>
 {
     [HttpPost]
+    [Authorize(Roles = "Owner, Contributor")]
     public virtual async Task<IActionResult> Add(TViewModel viewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -27,6 +29,7 @@ public abstract class GenericController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpPut]
+    [Authorize(Roles = "Owner, Contributor")]
     public virtual async Task<IActionResult> Update(TViewModel viewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
@@ -37,6 +40,7 @@ public abstract class GenericController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpGet]
+    [Authorize(Roles = "Owner, Contributor, Viewer")]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         var model = await repository.GetByIdAsync(id);
@@ -45,6 +49,7 @@ public abstract class GenericController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpDelete]
+    [Authorize(Roles = "Owner, Contributor")]
     public virtual async Task<IActionResult> Remove(Guid id)
     {
         await service.RemoveAsync(id);

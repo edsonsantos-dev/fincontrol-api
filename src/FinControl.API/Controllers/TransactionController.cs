@@ -4,6 +4,7 @@ using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
 using FinControl.Business.Models.Validations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinControl.API.Controllers;
@@ -15,6 +16,7 @@ public class TransactionController(
     : GenericController<TransactionViewModel, Transaction, TransactionValidation>(notifier, repository, service)
 {
     [HttpGet(nameof(GetTransactionsAsync))]
+    [Authorize(Roles = "Viewer")]
     public async Task<IActionResult> GetTransactionsAsync(Guid accountId)
     {
         var models = await repository.GetTransactionsAsync(accountId);
@@ -25,6 +27,7 @@ public class TransactionController(
     }
 
     [HttpGet(nameof(GetTransactionByIdAsync))]
+    [Authorize(Roles = "Viewer")]
     public async Task<IActionResult> GetTransactionByIdAsync(Guid id)
     {
         var model = await repository.GetTransactionByIdAsync(id);

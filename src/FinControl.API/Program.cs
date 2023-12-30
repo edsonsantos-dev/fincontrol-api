@@ -1,3 +1,4 @@
+using System.Text;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
@@ -6,57 +7,39 @@ using FinControl.Business.Notifications;
 using FinControl.Business.Services;
 using FinControl.Data.Context;
 using FinControl.Data.Repository;
+using FinControl.Shared.Config;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(opt => { opt.SuppressModelStateInvalidFilter = true; });
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(opt =>
-{
-    opt.SwaggerDoc("v1", new OpenApiInfo { Title = "FinControl.API", Version = "v1" });
+builder.Services.AddSwaggerGen();
 
-    opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+var key = Encoding.ASCII.GetBytes(Settings.Instance!.Secret);
+builder.Services.AddAuthentication(x =>
     {
-        Description = "JWT Authorization header using the Bearer scheme. Example: \"Authorization: Bearer {token}\"",
-        Name = "Authorization",
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = ParameterLocation.Header,
-        Type = SecuritySchemeType.ApiKey
-    });
-    opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+        x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    })
+    .AddJwtBearer(x =>
     {
+        x.RequireHttpsMetadata = false;
+        x.SaveToken = true;
+        x.TokenValidationParameters = new TokenValidationParameters
         {
-            new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme, 
-                    Id = "Bearer"
-                }
-            },
-            new string[] { }
-        }
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(key),
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidIssuer = Settings.Instance.Issuer,
+            ValidAudience = Settings.Instance.Issuer,
+        };
     });
-});
-
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuer = true,
-        ValidateAudience = true,
-        ValidateLifetime = true,
-        ValidateIssuerSigningKey = true,
-        ValidIssuer = "https://fincontrol.dev",
-        ValidAudience = "FinControl.API",
-    };
-});
 builder.Services.AddAuthorization();
 
 DependecyInjection();
@@ -68,6 +51,7 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", isEnabled: true);
 
 var app = builder.Build();
 
+app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSwagger();

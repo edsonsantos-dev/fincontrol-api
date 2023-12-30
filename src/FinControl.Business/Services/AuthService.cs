@@ -4,6 +4,7 @@ using System.Text;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Models;
 using FinControl.Business.Notifications;
+using FinControl.Shared.Config;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
@@ -14,24 +15,24 @@ public class AuthService(INotifier notifier) : IAuthService
     public string GenerateAccessToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes("7b48f42f-3c13-4cf9-94f3-4a08124b7a75");
+        var key = Encoding.ASCII.GetBytes(Settings.Instance!.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Role, user.Role.ToString()),
-                new Claim("UserId", user.Id.ToString()),
-                new Claim("AccountId", user.AccountId.ToString())
+                new(ClaimTypes.Name, user.FullName),
+                new(ClaimTypes.Role, user.Role.ToString()),
+                new("UserId", user.Id.ToString()),
+                new("AccountId", user.AccountId.ToString())
             }),
-            Issuer = "https://fincontrol.dev",
-            Audience = "FinControl.API",
+            Issuer = Settings.Instance.Issuer,
+            Audience = Settings.Instance.Audience,
             NotBefore = DateTime.UtcNow,
             Expires = DateTime.UtcNow.AddMinutes(60),
             IssuedAt = DateTime.UtcNow,
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            TokenType = "at+jwt"
+            TokenType = Settings.Instance.TokenTypeAccessToken,
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -41,7 +42,7 @@ public class AuthService(INotifier notifier) : IAuthService
     public string GenerateRefreshToken(User user)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var key = Encoding.ASCII.GetBytes("7b48f42f-3c13-4cf9-94f3-4a08124b7a75");
+        var key = Encoding.ASCII.GetBytes(Settings.Instance!.Secret);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
             Subject = new ClaimsIdentity(new Claim[]
@@ -51,14 +52,14 @@ public class AuthService(INotifier notifier) : IAuthService
                 new Claim("UserId", user.Id.ToString()),
                 new Claim("AccountId", user.AccountId.ToString())
             }),
-            Issuer = "https://fincontrol.dev",
-            Audience = "FinControl.API",
+            Issuer = Settings.Instance.Issuer,
+            Audience = Settings.Instance.Audience,
             NotBefore = DateTime.UtcNow,
             Expires = DateTime.UtcNow.AddDays(30),
             IssuedAt = DateTime.UtcNow,
             SigningCredentials =
                 new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-            TokenType = "rt+jwt"
+            TokenType = Settings.Instance.TokenTypeRefreshToken
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -68,12 +69,12 @@ public class AuthService(INotifier notifier) : IAuthService
     public async Task<TokenValidationResult?> ValidateToken(string refreshToken)
     {
         var handler = new JsonWebTokenHandler();
-        var key = Encoding.ASCII.GetBytes("7b48f42f-3c13-4cf9-94f3-4a08124b7a75");
+        var key = Encoding.ASCII.GetBytes(Settings.Instance!.Secret);
 
         var result = await handler.ValidateTokenAsync(refreshToken, new TokenValidationParameters
         {
-            ValidIssuer = "https://fincontrol.dev",
-            ValidAudience = "FinControl.API",
+            ValidIssuer = Settings.Instance.Issuer,
+            ValidAudience = Settings.Instance.Audience,
             RequireSignedTokens = false,
             IssuerSigningKey = new SymmetricSecurityKey(key),
         });
