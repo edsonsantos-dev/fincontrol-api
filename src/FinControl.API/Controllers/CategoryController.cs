@@ -10,4 +10,4 @@ public class CategoryController(
     INotifier notifier,
     IRepository<Category> repository,
     IGenericService<CategoryValidation, Category> service)
-    : BaseController<CategoryViewModel, Category, CategoryValidation>(notifier, repository, service);
+    : GenericController<CategoryViewModel, Category, CategoryValidation>(notifier, repository, service);

@@ -12,7 +12,7 @@ public class TransactionController(
     INotifier notifier,
     ITransactionRepository repository,
     IGenericService<TransactionValidation, Transaction> service)
-    : BaseController<TransactionViewModel, Transaction, TransactionValidation>(notifier, repository, service)
+    : GenericController<TransactionViewModel, Transaction, TransactionValidation>(notifier, repository, service)
 {
     [HttpGet(nameof(GetTransactionsAsync))]
     public async Task<IActionResult> GetTransactionsAsync(Guid accountId)

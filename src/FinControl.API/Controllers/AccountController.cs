@@ -10,4 +10,4 @@ public class AccountController(
     INotifier notifier,
     IRepository<Account> repository,
     IGenericService<AccountValidation, Account> service)
-    : BaseController<AccountViewModel, Account, AccountValidation>(notifier, repository, service);
+    : GenericController<AccountViewModel, Account, AccountValidation>(notifier, repository, service);

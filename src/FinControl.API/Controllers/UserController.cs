@@ -10,4 +10,4 @@ public class UserController(
     INotifier notifier,
     IRepository<User> repository,
     IGenericService<UserValidation, User> service)
-    : BaseController<UserViewModel, User, UserValidation>(notifier, repository, service);
+    : GenericController<UserViewModel, User, UserValidation>(notifier, repository, service);

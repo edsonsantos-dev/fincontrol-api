@@ -6,4 +6,5 @@ namespace FinControl.Business.Interfaces;
 public interface IUserService : IGenericService<UserValidation, User>
 {
     void GeneretePasswordHash(User model);
+    string GeneretePasswordHash(string password);
 }

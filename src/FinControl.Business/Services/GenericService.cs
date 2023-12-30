@@ -9,7 +9,7 @@ namespace FinControl.Business.Services;
 
 public abstract class GenericService<TValidation, TEntity>(
     IRepository<TEntity> repository,
-    INotifier _notifier)
+    INotifier notifier)
     : IGenericService<TValidation, TEntity>
     where TValidation : AbstractValidator<TEntity>, new()
     where TEntity : Entity
@@ -46,7 +46,7 @@ public abstract class GenericService<TValidation, TEntity>(
 
     protected Task NotifyAsync(string message)
     {
-        _notifier.AddNotification(new Notification(message));
+        notifier.AddNotification(new Notification(message));
         
         return Task.CompletedTask;
     }
