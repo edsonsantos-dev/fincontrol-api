@@ -1,4 +1,5 @@
-﻿using FluentValidation;
+﻿using FinControl.Shared.Extensions;
+using FluentValidation;
 
 namespace FinControl.Business.Models.Validations;
 
@@ -25,5 +26,9 @@ public class UserValidation : ValidatorBase<User>
 
         RuleFor(x => x.PasswordHash)
             .NotEmpty().WithMessage(IfNullOrEmptyMessage);
+
+        RuleFor(x => x.Email)
+            .Must(email => email.EmailIsValid())
+            .WithMessage("Informe um e-mail válido.");
     }
 }

@@ -8,6 +8,6 @@ namespace FinControl.API.Controllers;
 
 public class UserController(
     INotifier notifier,
-    IRepository<User> repository,
+    IUserRepository repository,
     IGenericService<UserValidation, User> service)
     : GenericController<UserViewModel, User, UserValidation>(notifier, repository, service);

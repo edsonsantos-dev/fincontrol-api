@@ -10,15 +10,12 @@ namespace FinControl.API.Controllers;
 public class AuthController(
     IAuthService service,
     INotifier notifier,
-    IUserService userService,
     IUserRepository userRepository) : BaseController(notifier)
 {
     [HttpPost(nameof(SignIn))]
     public async Task<IActionResult> SignIn(UserLoginViewModel viewModel)
     {
-        var passwordHash = userService.GeneretePasswordHash(viewModel.Password);
-
-        var user = await userRepository.GetByEmailAsync(viewModel.Email, passwordHash);
+        var user = await userRepository.GetByEmailAsync(viewModel.Email, viewModel.Password.GetPasswordHash());
         if (user == null)
         {
             NotifyError("Invalid email or password");

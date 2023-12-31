@@ -73,7 +73,7 @@ void DependecyInjection()
     builder.Services.AddScoped<IRepository<Category>, CategoryRepository>();
     builder.Services.AddScoped<IGenericService<TransactionValidation, Transaction>, TransactionService>();
     builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
-    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IGenericService<UserValidation, User>, UserService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IAuthService, AuthService>();
 
