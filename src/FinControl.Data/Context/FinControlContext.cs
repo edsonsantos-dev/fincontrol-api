@@ -1,14 +1,22 @@
-﻿using FinControl.Business.Models;
+﻿using FinControl.Business.Interfaces;
+using FinControl.Business.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace FinControl.Data.Context;
 
 public sealed class FinControlContext : DbContext
 {
-    public FinControlContext(DbContextOptions<FinControlContext> options) : base(options)
+    private readonly IUserContext _userContext;
+    public Guid UserId => _userContext.GetUserId();
+    public Guid AccountId => _userContext.GetAccountId();
+    
+    public FinControlContext(
+        DbContextOptions<FinControlContext> options,
+        IUserContext userContext) : base(options)
     {
         ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         ChangeTracker.AutoDetectChangesEnabled = false;
+        _userContext = userContext;
     }
 
     public DbSet<Account> Accounts { get; set; }

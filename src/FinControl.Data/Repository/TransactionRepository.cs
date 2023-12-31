@@ -18,13 +18,13 @@ public class TransactionRepository(
             .FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<Transaction>> GetTransactionsAsync(Guid accountId)
+    public async Task<IEnumerable<Transaction>> GetTransactionsAsync()
     {
         return await Context.Transactions
             .AsNoTracking()
             .Include(x => x.Category)
             .Include(x => x.User)
-            .Where(x => x.AccountId == accountId)
+            .Where(x => x.AccountId == Context.AccountId)
             .ToListAsync();
     }
 }

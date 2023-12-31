@@ -3,14 +3,12 @@ using System.Security.Claims;
 using System.Text;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Models;
-using FinControl.Business.Notifications;
 using FinControl.Shared.Config;
-using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace FinControl.Business.Services;
 
-public class AuthService(INotifier notifier) : IAuthService
+public class AuthService : IAuthService
 {
     public string GenerateAccessToken(User user)
     {
@@ -47,10 +45,10 @@ public class AuthService(INotifier notifier) : IAuthService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                new Claim(ClaimTypes.Name, user.FullName),
-                new Claim(ClaimTypes.Role, user.Role.ToString()),
-                new Claim("UserId", user.Id.ToString()),
-                new Claim("AccountId", user.AccountId.ToString())
+                new(ClaimTypes.Name, user.FullName),
+                new(ClaimTypes.Role, user.Role.ToString()),
+                new("UserId", user.Id.ToString()),
+                new("AccountId", user.AccountId.ToString())
             }),
             Issuer = Settings.Instance.Issuer,
             Audience = Settings.Instance.Audience,
@@ -64,24 +62,5 @@ public class AuthService(INotifier notifier) : IAuthService
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
         return tokenHandler.WriteToken(token);
-    }
-
-    public async Task<TokenValidationResult?> ValidateToken(string refreshToken)
-    {
-        var handler = new JsonWebTokenHandler();
-        var key = Encoding.ASCII.GetBytes(Settings.Instance!.Secret);
-
-        var result = await handler.ValidateTokenAsync(refreshToken, new TokenValidationParameters
-        {
-            ValidIssuer = Settings.Instance.Issuer,
-            ValidAudience = Settings.Instance.Audience,
-            RequireSignedTokens = false,
-            IssuerSigningKey = new SymmetricSecurityKey(key),
-        });
-
-        if (!result.IsValid)
-            notifier.AddNotification(new Notification("Expired token"));
-
-        return result;
     }
 }

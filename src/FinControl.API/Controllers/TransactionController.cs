@@ -16,10 +16,10 @@ public class TransactionController(
     : GenericController<TransactionViewModel, Transaction, TransactionValidation>(notifier, repository, service)
 {
     [HttpGet(nameof(GetTransactionsAsync))]
-    [Authorize(Roles = "Viewer")]
-    public async Task<IActionResult> GetTransactionsAsync(Guid accountId)
+    [Authorize(Roles = "Owner, Contributor, Viewer")]
+    public async Task<IActionResult> GetTransactionsAsync()
     {
-        var models = await repository.GetTransactionsAsync(accountId);
+        var models = await repository.GetTransactionsAsync();
 
         var viewModels = models.Select(TransactionViewModel.FromModel);
 
@@ -27,7 +27,7 @@ public class TransactionController(
     }
 
     [HttpGet(nameof(GetTransactionByIdAsync))]
-    [Authorize(Roles = "Viewer")]
+    [Authorize(Roles = "Owner, Contributor, Viewer")]
     public async Task<IActionResult> GetTransactionByIdAsync(Guid id)
     {
         var model = await repository.GetTransactionByIdAsync(id);

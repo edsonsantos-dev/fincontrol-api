@@ -2,6 +2,7 @@
 using FinControl.API.ViewModels;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
+using FinControl.Shared.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FinControl.API.Controllers;
@@ -40,7 +41,7 @@ public class AuthController(
     [HttpPost(nameof(RefreshToken))]
     public async Task<IActionResult> RefreshToken(string refreshToken)
     {
-        var result = await service.ValidateToken(refreshToken);
+        var result = await TokenExtensions.ValidateToken(refreshToken);
         if (result is not { IsValid: true })
         {
             NotifyError("Invalid refresh token");

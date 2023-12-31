@@ -1,4 +1,5 @@
 using System.Text;
+using FinControl.API.Extensions;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
@@ -13,6 +14,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddHttpContextAccessor();
+builder.LoadSettings();
 
 builder.Services.AddControllers()
     .ConfigureApiBehaviorOptions(opt => { opt.SuppressModelStateInvalidFilter = true; });
@@ -37,7 +41,7 @@ builder.Services.AddAuthentication(x =>
             ValidateAudience = true,
             ValidateLifetime = true,
             ValidIssuer = Settings.Instance.Issuer,
-            ValidAudience = Settings.Instance.Issuer,
+            ValidAudience = Settings.Instance.Audience,
         };
     });
 builder.Services.AddAuthorization();
@@ -72,4 +76,6 @@ void DependecyInjection()
     builder.Services.AddScoped<IUserService, UserService>();
     builder.Services.AddScoped<IUserRepository, UserRepository>();
     builder.Services.AddScoped<IAuthService, AuthService>();
+
+    builder.Services.AddScoped<IUserContext, UserContext>();
 }
