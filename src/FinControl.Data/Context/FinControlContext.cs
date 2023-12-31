@@ -9,7 +9,7 @@ public sealed class FinControlContext : DbContext
     private readonly IUserContext _userContext;
     public Guid UserId => _userContext.GetUserId();
     public Guid AccountId => _userContext.GetAccountId();
-    
+
     public FinControlContext(
         DbContextOptions<FinControlContext> options,
         IUserContext userContext) : base(options)
@@ -48,20 +48,26 @@ public sealed class FinControlContext : DbContext
         var entityEntries = ChangeTracker
             .Entries()
             .Where(x => x.Entity.GetType().GetProperty("AddedOn") != null ||
-                        x.Entity.GetType().GetProperty("AddedBy") != null);
+                        x.Entity.GetType().GetProperty("AddedBy") != null ||
+                        x.Entity.GetType().GetProperty("UserId") != null ||
+                        x.Entity.GetType().GetProperty("AccountId") != null);
 
         foreach (var entityEntry in entityEntries)
         {
             if (entityEntry.State == EntityState.Added)
             {
                 entityEntry.Property("AddedOn").CurrentValue = DateTime.UtcNow;
-                //TODO: added by will be set by login context 
+                entityEntry.Property("AddedBy").CurrentValue = UserId;
+                entityEntry.Property("UserId").CurrentValue = UserId;
+                entityEntry.Property("AccountId").CurrentValue = AccountId;
             }
 
             if (entityEntry.State != EntityState.Modified) continue;
 
             entityEntry.Property("AddedOn").IsModified = false;
             entityEntry.Property("AddedBy").IsModified = false;
+            entityEntry.Property("UserId").IsModified = false;
+            entityEntry.Property("AccountId").IsModified = false;
         }
     }
 
@@ -77,7 +83,7 @@ public sealed class FinControlContext : DbContext
             if (entityEntry.State == EntityState.Added) continue;
 
             entityEntry.Property("ModifiedOn").CurrentValue = DateTime.UtcNow;
-            //TODO: modified by will be set by login context 
+            entityEntry.Property("ModifiedBy").CurrentValue = UserId;
         }
     }
 }

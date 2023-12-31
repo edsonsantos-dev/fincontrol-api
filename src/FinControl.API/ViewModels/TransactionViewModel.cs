@@ -5,7 +5,7 @@ namespace FinControl.API.ViewModels;
 public class TransactionViewModel : ViewModelBase<Transaction>
 {
     public decimal Amount { get; set; }
-    public string Description { get; set; }
+    public required string Description { get; set; }
     public int Installment { get; set; }
 
     public Guid CategoryId { get; set; }
