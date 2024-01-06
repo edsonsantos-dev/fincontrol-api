@@ -21,6 +21,11 @@ public abstract class GenericService<TValidation, TEntity>(
         await repository.AddAsync(model);
     }
 
+    public virtual async Task AddRangeAsync(IEnumerable<TEntity> models)
+    {
+        await repository.AddRangeAsync(models);
+    }
+
     public virtual async Task UpdateAsync(TEntity model)
     {
         if (!await RunValidationAsync(new TValidation(), model)) return;

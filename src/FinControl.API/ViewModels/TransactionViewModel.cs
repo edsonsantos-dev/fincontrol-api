@@ -7,6 +7,7 @@ public class TransactionViewModel : ViewModelBase<Transaction>
     public decimal Amount { get; set; }
     public required string Description { get; set; }
     public int Installment { get; set; }
+    public DateTime DueDate { get; set; }
 
     public Guid CategoryId { get; set; }
     public CategoryViewModel? Category { get; set; }
@@ -23,6 +24,7 @@ public class TransactionViewModel : ViewModelBase<Transaction>
             Amount = Amount,
             Description = Description,
             Installment = Installment,
+            DueDate = DueDate,
             CategoryId = CategoryId,
             RecurrenceId = RecurrenceId,
             Recurrence = Recurrence?.ToModel(),

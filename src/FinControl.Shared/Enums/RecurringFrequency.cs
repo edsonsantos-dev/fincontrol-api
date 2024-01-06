@@ -2,12 +2,12 @@
 
 public enum RecurringFrequency
 {
-    Daily,
-    Weekly,
-    Fortnightly,
-    Monthly,
-    Bimonthly,
-    Quarterly,
-    HalfYearly,
-    Yearly
+    Daily = 0,
+    Weekly = 1,
+    Fortnightly = 2,
+    Monthly = 3,
+    Bimonthly = 4,
+    Quarterly = 5,
+    HalfYearly = 6,
+    Yearly = 7
 }
