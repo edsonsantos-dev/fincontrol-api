@@ -39,6 +39,7 @@ public sealed class FinControlContext : DbContext
     {
         HandleAddedOnAndAddedByForEntities();
         HandleModifiedOnAndModifiedByForEntities();
+        HandleRemovedOnAndRemovedByForEntities();
 
         return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
     }
@@ -80,10 +81,28 @@ public sealed class FinControlContext : DbContext
 
         foreach (var entityEntry in entityEntries)
         {
-            if (entityEntry.State == EntityState.Added) continue;
+            if (entityEntry.State != EntityState.Modified) continue;
 
             entityEntry.Property("ModifiedOn").CurrentValue = DateTime.UtcNow;
             entityEntry.Property("ModifiedBy").CurrentValue = UserId;
+        }
+    }
+    
+    private void HandleRemovedOnAndRemovedByForEntities()
+    {
+        var entityEntries = ChangeTracker
+            .Entries()
+            .Where(x => x.Entity.GetType().GetProperty("RemovedOn") != null ||
+                        x.Entity.GetType().GetProperty("RemovedBy") != null);
+
+        foreach (var entityEntry in entityEntries)
+        {
+            if (entityEntry.State != EntityState.Deleted) continue;
+
+            entityEntry.Property("RemovedOn").CurrentValue = DateTime.UtcNow;
+            entityEntry.Property("RemovedBy").CurrentValue = UserId;
+
+            entityEntry.State = EntityState.Modified;
         }
     }
 }
