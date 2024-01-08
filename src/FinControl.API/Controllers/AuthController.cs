@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using FinControl.API.ViewModels;
+using FinControl.API.ViewModels.InputViewModels.UserInputModels;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Shared.Extensions;
@@ -13,7 +14,7 @@ public class AuthController(
     IUserRepository userRepository) : BaseController(notifier)
 {
     [HttpPost(nameof(SignIn))]
-    public async Task<IActionResult> SignIn(UserLoginViewModel viewModel)
+    public async Task<IActionResult> SignIn(LoginInputViewModel viewModel)
     {
         var user = await userRepository.GetByEmailAsync(viewModel.Email, viewModel.Password.GetPasswordHash());
         if (user == null)

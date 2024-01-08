@@ -1,4 +1,6 @@
 ﻿using FinControl.API.ViewModels;
+using FinControl.API.ViewModels.InputViewModels;
+using FinControl.API.ViewModels.OutputViewModels;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
@@ -12,10 +14,11 @@ public class AccountController(
     INotifier notifier,
     IRepository<Account> repository,
     IGenericService<AccountValidation, Account> service)
-    : GenericController<AccountViewModel, Account, AccountValidation>(notifier, repository, service)
+    : GenericController<AccountInputModel, AccountOutputViewModel, Account, AccountValidation>
+        (notifier, repository, service)
 {
     [AllowAnonymous]
-    public override Task<IActionResult> Add(AccountViewModel viewModel)
+    public override Task<IActionResult> Add(AccountInputModel viewModel)
     {
         return base.Add(viewModel);
     }

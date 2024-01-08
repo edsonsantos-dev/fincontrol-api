@@ -1,4 +1,6 @@
 ﻿using FinControl.API.ViewModels;
+using FinControl.API.ViewModels.InputViewModels.UserInputModels;
+using FinControl.API.ViewModels.OutputViewModels;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
@@ -10,4 +12,5 @@ public class UserController(
     INotifier notifier,
     IUserRepository repository,
     IGenericService<UserValidation, User> service)
-    : GenericController<UserViewModel, User, UserValidation>(notifier, repository, service);
+    : GenericController<UserInputViewModel, UserOutputViewModel, User, UserValidation>
+        (notifier, repository, service);

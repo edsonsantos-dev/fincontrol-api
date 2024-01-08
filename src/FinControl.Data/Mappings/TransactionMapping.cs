@@ -23,6 +23,7 @@ public class TransactionMapping : IEntityTypeConfiguration<Transaction>
         builder.HasIndex(x => x.AddedBy);
         builder.HasIndex(x => x.AddedOn);
         builder.HasIndex(x => x.RemovedOn);
+        builder.HasIndex(x => x.DueDate);
         
         builder.HasOne(x => x.Category)
             .WithMany(x => x.Transactions)

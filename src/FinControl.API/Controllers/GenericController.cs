@@ -1,5 +1,6 @@
 ﻿using System.Net;
-using FinControl.API.ViewModels;
+using FinControl.API.ViewModels.InputViewModels;
+using FinControl.API.ViewModels.OutputViewModels;
 using FinControl.Business.Interfaces;
 using FinControl.Business.Interfaces.Repositories;
 using FinControl.Business.Models;
@@ -9,17 +10,22 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FinControl.API.Controllers;
 
-public abstract class GenericController<TViewModel, TEntity, TValidation>(
+public abstract class GenericController<
+    TInputViewModel,
+    TOutputViewModel,
+    TEntity,
+    TValidation>(
     INotifier notifier,
     IRepository<TEntity> repository,
     IGenericService<TValidation, TEntity> service) : BaseController(notifier)
     where TEntity : Entity
-    where TViewModel : ViewModelBase<TEntity>
+    where TInputViewModel : InputViewModelBase<TEntity>
+    where TOutputViewModel : OutputViewModelBase<TEntity>, new()
     where TValidation : AbstractValidator<TEntity>
 {
     [HttpPost]
     [Authorize(Roles = "Owner, Contributor")]
-    public virtual async Task<IActionResult> Add(TViewModel viewModel)
+    public virtual async Task<IActionResult> Add(TInputViewModel viewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -30,7 +36,7 @@ public abstract class GenericController<TViewModel, TEntity, TValidation>(
 
     [HttpPut]
     [Authorize(Roles = "Owner, Contributor")]
-    public virtual async Task<IActionResult> Update(TViewModel viewModel)
+    public virtual async Task<IActionResult> Update(TInputViewModel viewModel)
     {
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
@@ -40,12 +46,18 @@ public abstract class GenericController<TViewModel, TEntity, TValidation>(
     }
 
     [HttpGet]
-    [Authorize(Roles = "Owner, Contributor, Viewer")]
+    [Authorize]
     public virtual async Task<IActionResult> Get(Guid id)
     {
         var model = await repository.GetByIdAsync(id);
 
-        return model != null ? CustomResponse(HttpStatusCode.OK, model) : CustomResponse(HttpStatusCode.NoContent);
+        if (model == null) return CustomResponse(HttpStatusCode.NoContent);
+
+        var outputViewModel = new TOutputViewModel();
+
+        return CustomResponse(
+            HttpStatusCode.OK,
+            outputViewModel.FromModel<TOutputViewModel>(model)!);
     }
 
     [HttpDelete]

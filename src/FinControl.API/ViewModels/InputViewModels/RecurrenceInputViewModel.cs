@@ -1,9 +1,9 @@
 ﻿using FinControl.Business.Models;
 using FinControl.Shared.Enums;
 
-namespace FinControl.API.ViewModels;
+namespace FinControl.API.ViewModels.InputViewModels;
 
-public class RecurrenceViewModel : ViewModelBase<Recurrence>
+public class RecurrenceInputViewModel : InputViewModelBase<Recurrence>
 {
     public int Installment { get; set; }
     public RecurringFrequency Frequency { get; set; }

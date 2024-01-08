@@ -15,16 +15,26 @@ public class TransactionRepository(
             .AsNoTracking()
             .Include(x => x.Category)
             .Include(x => x.User)
-            .FirstOrDefaultAsync(x => x.Id == id);
+            .Include(x => x.Recurrence)
+            .FirstOrDefaultAsync(x => x.Id == id && x.RemovedOn == null);
     }
 
     public async Task<IEnumerable<Transaction>> GetTransactionsAsync()
     {
-        return await Context.Transactions
-            .AsNoTracking()
-            .Include(x => x.Category)
-            .Include(x => x.User)
-            .Where(x => x.AccountId == Context.AccountId)
-            .ToListAsync();
+        try
+        {
+            return await Context.Transactions
+                .AsNoTracking()
+                .Include(x => x.Category)
+                .Include(x => x.User)
+                .Include(x => x.Recurrence)
+                .Where(x => x.AccountId == Context.AccountId && x.RemovedOn == null)
+                .ToListAsync();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }

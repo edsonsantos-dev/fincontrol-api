@@ -1,4 +1,6 @@
-﻿namespace FinControl.Business.Models;
+﻿using FinControl.Shared.Enums;
+
+namespace FinControl.Business.Models;
 
 public class Transaction : RemovableEntity
 {
@@ -6,13 +8,14 @@ public class Transaction : RemovableEntity
     public string Description { get; set; }
     public int Installment { get; set; }
     public DateTime DueDate { get; set; }
+    public TransactionDirection Direction { get; set; }
 
     public Guid CategoryId { get; set; }
-    public Category Category { get; set; }
+    public Category? Category { get; set; }
     public Guid? RecurrenceId { get; set; }
     public Recurrence? Recurrence { get; set; }
     public Guid AccountId { get; set; }
-    public Account Account { get; set; }
+    public Account? Account { get; set; }
     public Guid UserId { get; set; }
-    public User User { get; set; }
+    public User? User { get; set; }
 }
