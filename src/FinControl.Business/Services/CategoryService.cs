@@ -8,13 +8,17 @@ namespace FinControl.Business.Services;
 
 public class CategoryService(
     IRepository<Category> repository,
-    INotifier notifier) :
+    INotifier notifier,
+    IUserContext userContext) :
     GenericService<CategoryValidation, Category>(repository, notifier)
 {
     public override async Task<Category?> AddAsync(Category model)
     {
-        if (!await CategoryExists(x => x.Name == model.Name))
+        if (!await CategoryExists(x => x.Name == model.Name &&
+                                       x.AccountId == userContext.GetAccountId()))
+        {
             return await base.AddAsync(model);
+        }
 
         await NotifyAsync("Já há uma categoria registrada com esse nome.");
         return null;
@@ -22,9 +26,13 @@ public class CategoryService(
 
     public override async Task<Category?> UpdateAsync(Category? model)
     {
-        if (!await CategoryExists(x => x.Name == model.Name && x.Id != model.Id)) 
+        if (!await CategoryExists(x => x.Name == model.Name
+                                       && x.Id != model.Id
+                                       && x.AccountId == userContext.GetAccountId()))
+        {
             return await base.UpdateAsync(model);
-        
+        }
+
         await NotifyAsync("Já há uma categoria registrada com esse nome.");
         return null;
     }

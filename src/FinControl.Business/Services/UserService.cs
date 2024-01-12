@@ -24,7 +24,18 @@ public class UserService(
     public override async Task<User?> UpdateAsync(User model)
     {
         if (model!.Email.EmailIsValid())
+        {
+            var user = await repository.GetByIdAsync(model.Id);
+            
+            if (user == null)
+            {
+                await NotifyAsync("Usuário não encontrado.");
+                return null;
+            }
+
+            model.PasswordHash = user.PasswordHash;
             return await base.UpdateAsync(model);
+        }
 
         await NotifyAsync("Informe um e-mail válido.");
         return null;
@@ -49,11 +60,11 @@ public class UserService(
         user.PasswordHash = newPassword.GetPasswordHash();
         await repository.UpdateAsync(user);
     }
-    
+
     public async Task ChangePasswordAsync(string currentPassword, string newPassword)
     {
         var user = await repository.FindUserByUserIdAndPasswordHashAsync(currentPassword.GetPasswordHash());
-        
+
         if (user == null)
         {
             await NotifyAsync("Usuário não encontrado.");
@@ -63,19 +74,18 @@ public class UserService(
         user.PasswordHash = newPassword.GetPasswordHash();
         await repository.UpdateAsync(user);
     }
-    
+
     public async Task ResetPasswordAsync(string email)
     {
         var user = await repository.FindUserByEmailAsync(email);
-        
+
         if (user == null)
         {
             await NotifyAsync("Usuário não encontrado.");
             return;
         }
-        
+
         //TODO: Enviar e-mail para redefinir senha.
         throw new NotImplementedException();
     }
-
 }
