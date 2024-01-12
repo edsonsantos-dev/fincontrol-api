@@ -9,8 +9,7 @@ namespace FinControl.Business.Services;
 
 public class UserService(
     IUserRepository repository,
-    INotifier notifier,
-    IUserContext userContext)
+    INotifier notifier)
     : GenericService<UserValidation, User>(repository, notifier), IUserService
 {
     public override async Task<User?> AddAsync(User model)
