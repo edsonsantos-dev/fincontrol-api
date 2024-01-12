@@ -21,7 +21,6 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
         builder.Property(x => x.PasswordHash)
-            .IsRequired()
             .HasMaxLength(100);
         builder.Property(x => x.IsActive)
             .HasDefaultValue(true);
@@ -29,6 +28,8 @@ public class UserMapping : IEntityTypeConfiguration<User>
             .IsRequired();
         builder.Property(x => x.Role)
             .IsRequired();
+
+        builder.HasIndex(x => x.Email);
 
         builder.HasOne(x => x.Account)
             .WithMany(x => x.Users)

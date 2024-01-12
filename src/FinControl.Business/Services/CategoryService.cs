@@ -11,31 +11,22 @@ public class CategoryService(
     INotifier notifier) :
     GenericService<CategoryValidation, Category>(repository, notifier)
 {
-    public override async Task AddAsync(Category model)
+    public override async Task<Category?> AddAsync(Category model)
     {
-        if (!await RunValidationAsync(new CategoryValidation(), model)) return;
+        if (!await CategoryExists(x => x.Name == model.Name))
+            return await base.AddAsync(model);
 
-
-        if (await CategoryExists(x => x.Name == model.Name))
-        {
-            await NotifyAsync("Já há uma categoria registrada com esse nome.");
-            return;
-        }
-
-        await base.AddAsync(model);
+        await NotifyAsync("Já há uma categoria registrada com esse nome.");
+        return null;
     }
 
-    public override async Task UpdateAsync(Category model)
+    public override async Task<Category?> UpdateAsync(Category? model)
     {
-        if (!await RunValidationAsync(new CategoryValidation(), model)) return;
-
-        if (await CategoryExists(x => x.Name == model.Name && x.Id != model.Id))
-        {
-            await NotifyAsync("Já há uma categoria registrada com esse nome.");
-            return;
-        }
-
-        await base.UpdateAsync(model);
+        if (!await CategoryExists(x => x.Name == model.Name && x.Id != model.Id)) 
+            return await base.UpdateAsync(model);
+        
+        await NotifyAsync("Já há uma categoria registrada com esse nome.");
+        return null;
     }
 
     public override async Task<bool> RemoveAsync(Guid id)

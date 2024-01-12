@@ -11,7 +11,7 @@ public class TransactionService(
     INotifier notifier)
     : GenericService<TransactionValidation, Transaction>(repository, notifier)
 {
-    public override async Task AddAsync(Transaction model)
+    public override async Task<Transaction?> AddAsync(Transaction model)
     {
         if (model.Recurrence is not { Installment: > 1 })
         {
@@ -24,18 +24,13 @@ public class TransactionService(
             foreach (var transaction in transactions)
             {
                 if (!await RunValidationAsync(new TransactionValidation(), transaction))
-                    return;
+                    return null;
             }
 
             await base.AddRangeAsync(transactions);
         }
-    }
 
-    public override async Task UpdateAsync(Transaction model)
-    {
-        if (!await RunValidationAsync(new TransactionValidation(), model)) return;
-
-        await base.UpdateAsync(model);
+        return model;
     }
 
     private static List<Transaction> BuildTransactions(Transaction model)

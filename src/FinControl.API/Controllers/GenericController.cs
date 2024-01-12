@@ -30,8 +30,12 @@ public abstract class GenericController<
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         var model = viewModel.ToModel();
-        await service.AddAsync(model);
-        return CustomResponse(HttpStatusCode.Created, viewModel);
+
+        model = await service.AddAsync(model);
+
+        return CustomResponse(
+            HttpStatusCode.Created,
+            new TOutputViewModel().FromModel<TOutputViewModel>(model));
     }
 
     [HttpPut]
@@ -41,8 +45,12 @@ public abstract class GenericController<
         if (!ModelState.IsValid) return CustomResponse(ModelState);
 
         var model = viewModel.ToModel();
-        await service.UpdateAsync(model);
-        return CustomResponse(HttpStatusCode.OK, viewModel);
+         
+        model = await service.UpdateAsync(model);
+        
+        return CustomResponse(
+            HttpStatusCode.OK,
+            new TOutputViewModel().FromModel<TOutputViewModel>(model));
     }
 
     [HttpGet]

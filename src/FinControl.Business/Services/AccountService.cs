@@ -11,19 +11,14 @@ public class AccountService(
     INotifier notifier) :
     GenericService<AccountValidation, Account>(repository, notifier)
 {
-    public override async Task AddAsync(Account model)
+    public override async Task<Account?> AddAsync(Account model)
     {
-        if (!await RunValidationAsync(new AccountValidation(), model)) return;
-
         var user = model.Users.FirstOrDefault();
-        user.PasswordHash = user.PasswordHash.GetPasswordHash();
 
-        if (!user.Email.EmailIsValid())
-        {
-            await NotifyAsync("Informe um e-mail válido.");
-            return;
-        }
-        
-        await base.AddAsync(model);
+        if (user!.Email.EmailIsValid())
+            return await base.AddAsync(model);
+
+        await NotifyAsync("Informe um e-mail válido.");
+        return null;
     }
 }

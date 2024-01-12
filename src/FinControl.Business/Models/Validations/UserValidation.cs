@@ -24,9 +24,6 @@ public class UserValidation : ValidatorBase<User>
             .NotEmpty().WithMessage(IfNullOrEmptyMessage)
             .Length(3, 100).WithMessage(LengthMessage);
 
-        RuleFor(x => x.PasswordHash)
-            .NotEmpty().WithMessage(IfNullOrEmptyMessage);
-
         RuleFor(x => x.Email)
             .Must(email => email.EmailIsValid())
             .WithMessage("Informe um e-mail válido.");

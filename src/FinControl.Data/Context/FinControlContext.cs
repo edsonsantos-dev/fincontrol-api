@@ -1,6 +1,7 @@
 ﻿using FinControl.Business.Interfaces;
 using FinControl.Business.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FinControl.Data.Context;
 
@@ -46,8 +47,7 @@ public sealed class FinControlContext : DbContext
 
     private void HandleAddedOnAndAddedByForEntities()
     {
-        var entityEntries = ChangeTracker
-            .Entries()
+        var entityEntries = ChangeTracker.Entries()
             .Where(x => x.Entity.GetType().GetProperty("AddedOn") != null ||
                         x.Entity.GetType().GetProperty("AddedBy") != null ||
                         x.Entity.GetType().GetProperty("UserId") != null ||
@@ -55,20 +55,13 @@ public sealed class FinControlContext : DbContext
 
         foreach (var entityEntry in entityEntries)
         {
-            if (entityEntry.State == EntityState.Added)
-            {
-                entityEntry.Property("AddedOn").CurrentValue = DateTime.UtcNow;
-                entityEntry.Property("AddedBy").CurrentValue = UserId;
-                entityEntry.Property("UserId").CurrentValue = UserId;
-                entityEntry.Property("AccountId").CurrentValue = AccountId;
-            }
+            var isAddedState = entityEntry.State == EntityState.Added;
+            var isModifiedState = entityEntry.State == EntityState.Modified;
 
-            if (entityEntry.State != EntityState.Modified) continue;
-
-            entityEntry.Property("AddedOn").IsModified = false;
-            entityEntry.Property("AddedBy").IsModified = false;
-            entityEntry.Property("UserId").IsModified = false;
-            entityEntry.Property("AccountId").IsModified = false;
+            SetPropertyIfNotNull(entityEntry, "AddedOn", DateTime.UtcNow, isAddedState, isModifiedState);
+            SetPropertyIfNotNull(entityEntry, "AddedBy", UserId, isAddedState, isModifiedState);
+            SetPropertyIfNotNull(entityEntry, "UserId", UserId, isAddedState, !isAddedState, Guid.Empty);
+            SetPropertyIfNotNull(entityEntry, "AccountId", AccountId, isAddedState, !isAddedState, Guid.Empty);
         }
     }
 
@@ -87,7 +80,7 @@ public sealed class FinControlContext : DbContext
             entityEntry.Property("ModifiedBy").CurrentValue = UserId;
         }
     }
-    
+
     private void HandleRemovedOnAndRemovedByForEntities()
     {
         var entityEntries = ChangeTracker
@@ -104,5 +97,24 @@ public sealed class FinControlContext : DbContext
 
             entityEntry.State = EntityState.Modified;
         }
+    }
+    
+    private static void SetPropertyIfNotNull(
+        EntityEntry entityEntry, 
+        string propertyName, 
+        object newValue, 
+        bool changeValueIfAddedState, 
+        bool changeIsModifiedIfModifiedState, 
+        Guid? condition = null)
+    {
+        var property = entityEntry.Metadata.FindProperty(propertyName);
+
+        if (property == null) return;
+        
+        if (changeValueIfAddedState && (condition == null || (Guid)entityEntry.Property(propertyName).CurrentValue! == condition.Value))
+            entityEntry.Property(propertyName).CurrentValue = newValue;
+
+        if (changeIsModifiedIfModifiedState)
+            entityEntry.Property(propertyName).IsModified = false;
     }
 }

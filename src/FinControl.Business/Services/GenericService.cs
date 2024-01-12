@@ -14,11 +14,13 @@ public abstract class GenericService<TValidation, TEntity>(
     where TValidation : AbstractValidator<TEntity>, new()
     where TEntity : Entity
 {
-    public virtual async Task AddAsync(TEntity model)
+    public virtual async Task<TEntity?> AddAsync(TEntity model)
     {
-        if (!await RunValidationAsync(new TValidation(), model)) return;
+        if (!await RunValidationAsync(new TValidation(), model)) return null;
         
         await repository.AddAsync(model);
+
+        return model;
     }
 
     public virtual async Task AddRangeAsync(IEnumerable<TEntity> models)
@@ -26,11 +28,13 @@ public abstract class GenericService<TValidation, TEntity>(
         await repository.AddRangeAsync(models);
     }
 
-    public virtual async Task UpdateAsync(TEntity model)
+    public virtual async Task<TEntity?> UpdateAsync(TEntity model)
     {
-        if (!await RunValidationAsync(new TValidation(), model)) return;
+        if (!await RunValidationAsync(new TValidation(), model)) return null;
         
         await repository.UpdateAsync(model);
+
+        return model;
     }
 
     public async Task<bool> RunValidationAsync(TValidation validation, TEntity entity)

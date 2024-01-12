@@ -20,36 +20,28 @@ public class TransactionOutputViewModel : OutputViewModelBase<Transaction>
 
     public override TOutputViewModel FromModel<TOutputViewModel>(Transaction? model)
     {
-        try
-        {
-            if (model == null) return null;
+        if (model == null) return null;
 
-            var outputViewModel = new TransactionOutputViewModel
-            {
-                Id = model.Id,
-                AddedOn = model.AddedOn,
-                AddedBy = model.AddedBy,
-                ModifiedOn = model.ModifiedOn,
-                ModifiedBy = model.ModifiedBy,
-                Amount = model.Amount,
-                Description = model.Description,
-                Installment = model.Installment,
-                DueDate = model.DueDate,
-                Direction = Direction,
-                CategoryId = model?.Category?.Id,
-                CategoryName = model?.Category?.Name,
-                UserId = model?.User?.Id,
-                UserName = model?.User?.FullName,
-                RecurrenceId = model.RecurrenceId,
-                AccountId = model.AccountId,
-            };
-
-            return outputViewModel as TOutputViewModel;
-        }
-        catch (Exception e)
+        var outputViewModel = new TransactionOutputViewModel
         {
-            Console.WriteLine(e);
-            throw;
-        }
+            Id = model.Id,
+            AddedOn = model.AddedOn,
+            AddedBy = model.AddedBy,
+            ModifiedOn = model.ModifiedOn,
+            ModifiedBy = model.ModifiedBy,
+            Amount = model.Amount,
+            Description = model.Description,
+            Installment = model.Installment,
+            DueDate = model.DueDate,
+            Direction = Direction,
+            CategoryId = model?.Category?.Id,
+            CategoryName = model?.Category?.Name,
+            UserId = model?.User?.Id,
+            UserName = model?.User?.FullName,
+            RecurrenceId = model.RecurrenceId,
+            AccountId = model.AccountId,
+        };
+
+        return outputViewModel as TOutputViewModel;
     }
 }

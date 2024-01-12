@@ -16,7 +16,7 @@ public class AuthController(
     [HttpPost(nameof(SignIn))]
     public async Task<IActionResult> SignIn(LoginInputViewModel viewModel)
     {
-        var user = await userRepository.GetByEmailAsync(viewModel.Email, viewModel.Password.GetPasswordHash());
+        var user = await userRepository.FindUserByEmailAndPasswordHashAsync(viewModel.Email, viewModel.Password.GetPasswordHash());
         if (user == null)
         {
             NotifyError("Invalid email or password");
